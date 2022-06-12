@@ -9,7 +9,7 @@ import { questionRouter } from './questions';
 export const appRouter = trpc
   .router()
   .transformer(superjson)
-  .merge('questions', questionRouter);
+  .merge('questions.', questionRouter);
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
