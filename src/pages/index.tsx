@@ -3,7 +3,7 @@ import { prisma } from '../db/client';
 import { trpc } from '../utils/trpc';
 
 export default function Home(props: any) {
-  const { data, isLoading } = trpc.useQuery(['getAllQuestions']);
+  const { data, isLoading } = trpc.useQuery(['questions.get-all']);
 
   if (isLoading || !data) {
     return <div>Loading...</div>;
