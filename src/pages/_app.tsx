@@ -27,5 +27,5 @@ export default withTRPC<AppRouter>({
    * @link https://trpc.io/docs/ssr
    */
   // try false if issues
-  ssr: true,
+  ssr: false,
 })(MyApp);
