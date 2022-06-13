@@ -10,11 +10,23 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return <Component {...pageProps} />;
 };
 
+function getBaseUrl() {
+  if (typeof window !== 'undefined') return '';
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+
+  return `http://localhost:${process.env.PORT ?? 3000}`;
+}
+
 export default withTRPC<AppRouter>({
   config({ ctx }) {
-    const url = '/api/trpc';
+    const url = `${getBaseUrl()}/api/trpc`;
 
     return {
+      headers() {
+        return {
+          cookie: ctx?.req?.headers.cookie,
+        };
+      },
       url,
       transformer: superjson,
       /**
@@ -27,5 +39,5 @@ export default withTRPC<AppRouter>({
    * @link https://trpc.io/docs/ssr
    */
   // try false if issues
-  ssr: false,
+  ssr: true,
 })(MyApp);
