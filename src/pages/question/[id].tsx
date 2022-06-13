@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
 import { trpc } from '../../utils/trpc';
 
 const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
@@ -14,9 +13,12 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
 
   return (
     <div className='p-8 flex flex-col'>
-      <div className='text-2xl font-bold'>{data?.question}</div>
+      {data?.isOwner && (
+        <div className='bg-red-700 rounded-md p-5'>You made this</div>
+      )}
+      <div className='text-2xl font-bold'>{data?.question?.question}</div>
       <div>
-        {(data?.options as string[])?.map((option) => (
+        {(data?.question?.options as string[])?.map((option) => (
           <div key='adskkq'>{option}</div>
         ))}
       </div>
@@ -27,11 +29,10 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
 const Questionpage = () => {
   const { query } = useRouter();
   const { id } = query;
-  console.log(id);
-
-  const { data, isLoading } = useQuery(['questions.get', { id }]);
 
   if (!id || typeof id !== 'string') return <div>No ID</div>;
+
+  // const { data, isLoading } = trpc.useQuery(['questions.get-all', { id }]);
 
   return <QuestionsPageContent id={id} />;
 };
