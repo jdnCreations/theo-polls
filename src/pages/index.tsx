@@ -2,32 +2,6 @@ import Link from 'next/link';
 import { useRef } from 'react';
 import { trpc } from '../utils/trpc';
 
-const QuestionCreator: React.FC = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const client = trpc.useContext();
-
-  const { mutate, isLoading } = trpc.useMutation('questions.create', {
-    onSuccess: () => {
-      client.invalidateQueries('questions.get-all-my-questions');
-      if (!inputRef.current) return;
-      inputRef.current.value = '';
-    },
-  });
-
-  return (
-    <input
-      ref={inputRef}
-      type='text'
-      disabled={isLoading}
-      onKeyDown={(event) => {
-        if (event.key === 'Enter') {
-          mutate({ question: event.currentTarget.value });
-        }
-      }}
-    />
-  );
-};
-
 export default function Home() {
   const { data, isLoading } = trpc.useQuery(['questions.get-all-my-questions']);
 
@@ -38,20 +12,23 @@ export default function Home() {
   return (
     <div className='p-6 flex flex-col'>
       <div className='flex flex-col'>
-        <div className='text-2xl font-bold'>Questions</div>
+        <div className='text-2xl font-bold'>Your Questions</div>
         {data.map((question) => {
           return (
-            <Link
-              href={`/question/${question.id}`}
-              key={question.id}
-              className='my-2'
-            >
-              {question.question}
-            </Link>
+            <div className='flex flex-col my-2' key={question.id}>
+              <Link href={`/question/${question.id}`}>
+                <a>
+                  <div>{question.question}</div>
+                </a>
+              </Link>
+              <span>Created on {question.createdAt.toDateString()}</span>
+            </div>
           );
         })}
-        <QuestionCreator />
       </div>
+      <Link href='/create'>
+        <a>Create New Question</a>
+      </Link>
     </div>
   );
 }
