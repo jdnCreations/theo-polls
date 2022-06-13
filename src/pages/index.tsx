@@ -10,9 +10,16 @@ export default function Home() {
   }
 
   return (
-    <div className='p-6 flex flex-col'>
-      <div className='flex flex-col'>
+    <div className='p-6 flex flex-col w-full'>
+      <div className='header flex w-full justify-between'>
         <div className='text-2xl font-bold'>Your Questions</div>
+        <Link href='/create'>
+          <a className='bg-gray-300 rounded-md text-gray-800 p-4'>
+            Create New Question
+          </a>
+        </Link>
+      </div>
+      <div className='flex flex-col'>
         {data.map((question) => {
           return (
             <div className='flex flex-col my-2' key={question.id}>
@@ -26,9 +33,6 @@ export default function Home() {
           );
         })}
       </div>
-      <Link href='/create'>
-        <a>Create New Question</a>
-      </Link>
     </div>
   );
 }
