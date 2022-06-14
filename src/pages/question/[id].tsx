@@ -16,8 +16,6 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
     }
   );
 
-  console.log('data?', data);
-
   if (!data || !data?.question) {
     return <div>Question not found</div>;
   }
@@ -36,7 +34,7 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
                 key={index}
                 className={data?.vote?.choice === index ? 'underline' : ''}
               >
-                {data?.votes?.[index]?._count} - {(option as any).text}
+                {data?.votes?.[index]?._count ?? 0} - {(option as any).text}
               </div>
             );
           }

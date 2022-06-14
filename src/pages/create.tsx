@@ -41,8 +41,6 @@ const CreateQuestionForm = () => {
     },
   });
 
-  const onSubmit = (data: any) => console.log(data);
-
   if (isLoading || data) return <div>Loading...</div>;
 
   return (
